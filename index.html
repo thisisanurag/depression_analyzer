@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHQ-9 Depression Analyzer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-height: 150px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #results {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            display: none;
+        }
+        .result-item {
+            margin-bottom: 15px;
+        }
+        .result-label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .recommendations {
+            margin-top: 20px;
+        }
+        .recommendations ul {
+            padding-left: 20px;
+        }
+        .recommendations li {
+            margin-bottom: 10px;
+        }
+        .severity-indicator {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .minimal {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .mild {
+            background-color: #f1c40f;
+            color: white;
+        }
+        .moderate {
+            background-color: #e67e22;
+            color: white;
+        }
+        .moderately-severe {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .severe {
+            background-color: #c0392b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PHQ-9 Depression Analyzer</h1>
+        
+        <div class="form-group">
+            <label for="description">Patient Description:</label>
+            <textarea id="description" placeholder="Enter the patient's description of their symptoms and feelings..."></textarea>
+        </div>
+        
+        <button onclick="assessDepression()">Assess Depression</button>
+        
+        <div id="results">
+            <div class="result-item">
+                <span class="result-label">PHQ-9 Score:</span>
+                <span id="score">0</span>
+            </div>
+            
+            <div class="result-item">
+                <span class="result-label">Severity Level:</span>
+                <span id="severity">Minimal</span>
+                <span id="severity-indicator" class="severity-indicator minimal">Minimal</span>
+            </div>
+            
+            <div class="recommendations">
+                <div class="result-label">Clinical Recommendations:</div>
+                <ul id="recommendations">
+                    <!-- Recommendations will be added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function assessDepression() {
+            const description = document.getElementById('description').value;
+            if (!description) {
+                alert('Please enter a description');
+                return;
+            }
+
+            try {
+                console.log('Sending request to server...');
+                const response = await fetch('http://localhost:5001/assess', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ description })
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log('Received data:', data);
+                
+                // Update results
+                document.getElementById('score').textContent = data.score.toFixed(1);
+                document.getElementById('severity').textContent = data.severity;
+                
+                // Update severity indicator
+                const severityIndicator = document.getElementById('severity-indicator');
+                severityIndicator.textContent = data.severity;
+                severityIndicator.className = 'severity-indicator ' + data.severity.toLowerCase().replace(' ', '-');
+                
+                // Update recommendations
+                const recommendationsList = document.getElementById('recommendations');
+                recommendationsList.innerHTML = '';
+                data.recommendations.forEach(rec => {
+                    const li = document.createElement('li');
+                    li.textContent = rec;
+                    recommendationsList.appendChild(li);
+                });
+
+                // Show results section
+                document.getElementById('results').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error assessing depression. Please check the console for details.');
+            }
+        }
+    </script>
+</body>
+</html> 
