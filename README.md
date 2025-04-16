@@ -44,6 +44,28 @@ A machine learning-powered web application that assesses mental health using the
   - Provide the entire conversation transcript for analysis
   - Ensure responses are clear and detailed
 
+## Sample Transcripts
+
+### Transcript 1: Severe Depression
+```
+"I constantly feel like I am worthless and a burden to others. I constantly feel like I am worthless and a burden to others. I frequently think about ending everything, I don't see a way out. I constantly feel like I am worthless and a burden to others. I am always exhausted, even talking feels like too much effort. People tell me I seem lifeless or that I barely move anymore. I feel empty and disconnected from everything, like life is meaningless. I frequently think about ending everything, I don't see a way out. I barely sleep at night, and when I do, nightmares wake me up."
+```
+
+### Transcript 2: Moderate Depression
+```
+"I feel like I am not good enough, and it bothers me a lot. I don't enjoy activities like I used to, I force myself to do things. I feel tired even after a full night's sleep. I feel like I am not good enough, and it bothers me a lot. I sometimes think about disappearing, but I wouldn't act on it. Feeling down most days, like nothing makes me happy anymore. My eating habits have changed significantly, sometimes I skip meals. I struggle to concentrate on my assignments and lose track easily. Feeling down most days, like nothing makes me happy anymore."
+```
+
+### Transcript 3: Mild Depression
+```
+"I have slight trouble falling asleep but not every night. I get distracted easily but can regain focus quickly. I occasionally feel uninterested in activities I usually enjoy. I have slight trouble falling asleep but not every night. Sometimes I feel down, but it doesn't last long. I get distracted easily but can regain focus quickly. I get distracted easily but can regain focus quickly. Sometimes I feel down, but it doesn't last long. I get distracted easily but can regain focus quickly."
+```
+
+### Transcript 4: Minimal/No Depression
+```
+"I can focus well on my studies without distractions. I feel confident in myself and my abilities. No thoughts of self-harm or suicidal ideation. I feel confident in myself and my abilities. Sleeping well, no major issues with rest. Eating habits are normal, no major appetite changes. Energy levels are good, I can do my daily tasks easily. I feel fine and enjoy my hobbies as usual. Energy levels are good, I can do my daily tasks easily."
+```
+
 ## Getting Started
 
 1. Clone the repository
